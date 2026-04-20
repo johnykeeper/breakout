@@ -25,9 +25,15 @@ namespace breakout
             _location = location;
             _speed = new Vector2(3, -3);
         }
-        public void Update()
+        public void Update(Rectangle window)
         {
+            _location.X += (int)_speed.X;
+            _location.Y += (int)_speed.Y;
 
+            if (_location.X <= 0 || _location.X + _location.Width >= window.Width)
+                _speed.X = -1;
+            if (_location.Y <= 0)
+                _speed.Y *= -1;
         }
         public void Draw(SpriteBatch spritebatch)
         {

@@ -22,20 +22,38 @@ namespace breakout
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 600;
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+           
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
             window = new Rectangle(0, 0, 800, 600);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            paddleTexture = Content.Load<Texture2D>("paddle");
+            ballTexture = Content.Load<Texture2D>("circle");
+            brickTexture = Content.Load<Texture2D>("rectangle");
+            
             paddle = new Paddle(paddleTexture, new Rectangle(350, 550, 100, 20), window);
+
             ball = new Ball(ballTexture, new Rectangle(390, 530, 20, 20));
+
+
             bricks = new List<Brick>();
-            for (int row = 0; row < 10; row++)
+
+
+            for (int row = 0; row < 5; row++)
             {
                 for (int col = 0; col < 10; col++)
                 {
-                    bricks.Add(new Brick(ballTexture, new Rectangle(col * 78 + 10, row * 30 + 50, 70, 25), Color.White));
+                    bricks.Add(new Brick(brickTexture, new Rectangle(col * 78 + 10, row * 30 + 50, 70, 25), Color.White));
 
 
                 }
@@ -43,15 +61,6 @@ namespace breakout
 
 
             }
-            base.Initialize();
-        }
-
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            paddleTexture = Content.Load<Texture2D>("paddle");
-            ballTexture = Content.Load<Texture2D>("circle");
-            brickTexture = Content.Load<Texture2D>("rectangle");
             // TODO: use this.Content to load your game content here
         }
 
@@ -63,7 +72,7 @@ namespace breakout
             // TODO: Add your update logic here
             keyboardState = Keyboard.GetState();
             paddle.update(keyboardState);
-            ball.Update();
+            ball.Update(window);
             base.Update(gameTime);
         }
 
