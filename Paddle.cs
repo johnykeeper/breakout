@@ -25,7 +25,7 @@ namespace breakout
             _window = window;
             _speed = Vector2.Zero;
         }
-        public void update(KeyboardState keyboardState)
+        public void Update(KeyboardState keyboardState)
         {
             _speed = Vector2.Zero;
             if (keyboardState.IsKeyDown(Keys.Left))

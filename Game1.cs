@@ -71,8 +71,8 @@ namespace breakout
 
             // TODO: Add your update logic here
             keyboardState = Keyboard.GetState();
-            paddle.update(keyboardState);
-            ball.Update(window, paddle.Rect, paddle.SpeedX);
+            paddle.Update(keyboardState);
+            ball.Update(window, paddle.Rect, paddle.SpeedX, bricks);
             base.Update(gameTime);
         }
 
