@@ -13,7 +13,7 @@ namespace breakout
         Paddle paddle;
         Ball ball;
         List<Brick> bricks;
-        Texture2D paddleTexture, ballTexture, brickTexture;
+        Texture2D paddleTexture, ballTexture, brickTexture, backgroundTexture;
         KeyboardState keyboardState;
         Rectangle window;
 
@@ -40,11 +40,11 @@ namespace breakout
             paddleTexture = Content.Load<Texture2D>("paddle");
             ballTexture = Content.Load<Texture2D>("circle");
             brickTexture = Content.Load<Texture2D>("rectangle");
-            
+            backgroundTexture = Content.Load<Texture2D>("coolspace");
             paddle = new Paddle(paddleTexture, new Rectangle(350, 550, 100, 20), window);
 
             ball = new Ball(ballTexture, new Rectangle(390, 530, 20, 20));
-
+            Color[] rowColors = {Color.DarkRed, Color.DarkOrange, Color.Goldenrod, Color.OliveDrab, Color.DarkSlateBlue};
 
             bricks = new List<Brick>();
 
@@ -53,7 +53,7 @@ namespace breakout
             {
                 for (int col = 0; col < 10; col++)
                 {
-                    bricks.Add(new Brick(brickTexture, new Rectangle(col * 78 + 10, row * 30 + 50, 70, 25), Color.White));
+                    bricks.Add(new Brick(brickTexture, new Rectangle(col * 78 + 10, row * 30 + 50, 70, 25), rowColors[row]));
 
 
                 }
@@ -82,6 +82,7 @@ namespace breakout
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
+            _spriteBatch.Draw(backgroundTexture, window, Color.White);
             paddle.Draw(_spriteBatch);
             ball.Draw(_spriteBatch);
             foreach (Brick b in bricks)
