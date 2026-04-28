@@ -10,6 +10,8 @@ namespace breakout
         private Rectangle _location;
         private Vector2 _speed;
         private Texture2D _apearance;
+        private Random random = new Random();
+
 
         public Rectangle Rect
         {
@@ -31,8 +33,9 @@ namespace breakout
         {
             _location.X += (int)_speed.X;
             _location.Y += (int)_speed.Y;
-            
-            if(_location.X <= 0)
+
+
+            if (_location.X <= 0)
             {
                 _location.X = 0;
                 _speed.X *= -1;
@@ -84,7 +87,11 @@ namespace breakout
                 if (_location.Intersects(b.Rect))
                 {
                     hitBrick = b;
-
+                    for(int i = 0; i < 8; i++)
+                    {
+                        Vector2 particleSpeed = new Vector2((float)(random.NextDouble() * 6 - 3), (float)(random.NextDouble() * 6 - 3));
+                        particleSpeed.Add(new Particle(new Rectangle(b.Rect.Center.X, b.Rect.Center.Y, 5, 5), particleSpeed, b.Color));
+                    }
 
 
                     if (_location.Bottom - b.Rect.Top <= 10)

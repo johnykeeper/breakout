@@ -13,6 +13,7 @@ namespace breakout
         Paddle paddle;
         Ball ball;
         List<Brick> bricks;
+        List<Particle> particles;
         Texture2D paddleTexture, ballTexture, brickTexture, backgroundTexture;
         KeyboardState keyboardState;
         Rectangle window;
@@ -47,7 +48,7 @@ namespace breakout
             Color[] rowColors = {Color.DarkRed, Color.DarkOrange, Color.Goldenrod, Color.OliveDrab, Color.DarkSlateBlue};
 
             bricks = new List<Brick>();
-
+            particles = new List<Particle>();
 
             for (int row = 0; row < 5; row++)
             {
@@ -74,6 +75,9 @@ namespace breakout
             paddle.Update(keyboardState);
             ball.Update(window, paddle.Rect, paddle.SpeedX, bricks);
             base.Update(gameTime);
+            particles.RemoveAll(p => p.IsDead);
+            foreach (Particle p in particles)
+                p.Update();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -87,6 +91,8 @@ namespace breakout
             ball.Draw(_spriteBatch);
             foreach (Brick b in bricks)
                 b.Draw(_spriteBatch);
+            foreach (Particle p in particles)
+                p.Draw(_spriteBatch, brickTexture);
             _spriteBatch.End();
             base.Draw(gameTime);
         }

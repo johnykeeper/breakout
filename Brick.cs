@@ -14,6 +14,10 @@ namespace breakout
         {
             get { return _location; }
         }
+        public Color Color
+        {
+            get { return _color; }
+        }
         public Brick(Texture2D appearance, Rectangle location, Color color)
         {
             _appearance = appearance;
