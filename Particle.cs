@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace breakout
 {
-    internal class Particle
+    public class Particle
     {
         private Rectangle _location;
         private Vector2 _speed;
@@ -28,7 +28,7 @@ namespace breakout
             _life -= 0.05f;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, Texture2D texture)
         {
             spriteBatch.Draw(texture, _location, _color * _life);
         }

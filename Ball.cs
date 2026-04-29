@@ -29,7 +29,7 @@ namespace breakout
             _location = location;
             _speed = new Vector2(3, -3);
         }
-        public void Update(Rectangle window, Rectangle Paddle, float paddleSpeed, List<Brick> bricks)
+        public void Update(Rectangle window, Rectangle Paddle, float paddleSpeed, List<Brick> bricks, List<Particle> particles)
         {
             _location.X += (int)_speed.X;
             _location.Y += (int)_speed.Y;
@@ -89,8 +89,8 @@ namespace breakout
                     hitBrick = b;
                     for(int i = 0; i < 8; i++)
                     {
-                        Vector2 particleSpeed = new Vector2((float)(random.NextDouble() * 6 - 3), (float)(random.NextDouble() * 6 - 3));
-                        particleSpeed.Add(new Particle(new Rectangle(b.Rect.Center.X, b.Rect.Center.Y, 5, 5), particleSpeed, b.Color));
+                        Vector2 pSpeed = new Vector2((float)(random.NextDouble() * 6 - 3), (float)(random.NextDouble() * 6 - 3));
+                        particles.Add(new Particle(new Rectangle(b.Rect.Center.X, b.Rect.Center.Y, 5, 5), pSpeed, b.Color));
                     }
 
 

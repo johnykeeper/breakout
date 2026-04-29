@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 
@@ -73,7 +74,7 @@ namespace breakout
             // TODO: Add your update logic here
             keyboardState = Keyboard.GetState();
             paddle.Update(keyboardState);
-            ball.Update(window, paddle.Rect, paddle.SpeedX, bricks);
+            ball.Update(window, paddle.Rect, paddle.SpeedX, bricks, particles);
             base.Update(gameTime);
             particles.RemoveAll(p => p.IsDead);
             foreach (Particle p in particles)
