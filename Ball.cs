@@ -50,11 +50,16 @@ namespace breakout
                 _location.Y = 0;
                 _speed.Y *= -1;
             }
-            else if(_location.Y + _location.Height >= window.Height)
-            {
-                _location.Y = window.Height - _location.Height;
-                _speed.Y *= -1;
-            }
+
+
+            // bottom wall
+
+
+            //else if(_location.Y + _location.Height >= window.Height)
+            //{
+            //    _location.Y = window.Height - _location.Height;
+            //    _speed.Y *= -1;
+            //}
 
             if (_location.Intersects(Paddle) && _speed.Y > 0)
             {
