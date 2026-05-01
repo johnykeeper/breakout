@@ -15,11 +15,11 @@ namespace breakout
         Ball ball;
         List<Brick> bricks;
         List<Particle> particles;
-        Texture2D paddleTexture, ballTexture, brickTexture, backgroundTexture, breakoutLogo, breakoutLose;
+        Texture2D paddleTexture, ballTexture, brickTexture, backgroundTexture, breakoutLogo, breakoutLose, breakoutWin;
         KeyboardState keyboardState;
         Rectangle window;
         SpriteFont font;
-        enum Screen { Title, Game, End}
+        enum Screen { Title, Game, End, Win}
         Screen screen;
 
         public Game1()
@@ -51,6 +51,7 @@ namespace breakout
             screen = Screen.Title;
             breakoutLogo = Content.Load<Texture2D>("Breakout_OG-logo");
             breakoutLose = Content.Load<Texture2D>("breakout-lose");
+            breakoutWin = Content.Load<Texture2D>("breakout-win");
 
             ball = new Ball(ballTexture, new Rectangle(390, 530, 20, 20));
             Color[] rowColors = {Color.DarkRed, Color.DarkOrange, Color.Goldenrod, Color.OliveDrab, Color.DarkSlateBlue};
@@ -96,6 +97,8 @@ namespace breakout
             {
                 paddle.Update(keyboardState);
                 ball.Update(window, paddle.Rect, paddle.SpeedX, bricks, particles);
+                if (bricks.Count == 0)
+                    screen = Screen.Win;
                 if (ball.Rect.Y > window.Height)
                     screen = Screen.End;
             }
@@ -104,9 +107,21 @@ namespace breakout
                 if (keyboardState.IsKeyDown(Keys.Space))
                     ResetGame();
             }
+            else if(screen == Screen.Win)
+            {
+                if (keyboardState.IsKeyDown(Keys.Space))
+                    ResetGame();
+            }
+            
         }
         private void ResetGame()
         {
+            screen = Screen.Title;
+            if (screen == Screen.Title)
+            {
+                if (keyboardState.IsKeyDown(Keys.Enter))
+                    screen = Screen.Game;
+            }
             ball = new Ball(ballTexture, new Rectangle(390, 530, 20, 20));
             paddle = new Paddle(paddleTexture, new Rectangle(350, 550, 100, 20), window);
             particles.Clear();
@@ -115,7 +130,7 @@ namespace breakout
             for (int row = 0; row < 5; row++)
                 for (int col = 0; col < 10; col++)
                     bricks.Add(new Brick(brickTexture, new Rectangle(col * 78 + 10, row * 30 + 50, 70, 25), rowColors[row]));
-            screen = Screen.Game;
+
         }
 
         protected override void Draw(GameTime gameTime)
@@ -144,6 +159,10 @@ namespace breakout
             {
                 _spriteBatch.Draw(breakoutLose, window, Color.White);
                 
+            }
+            else if(screen == Screen.Win)
+            {
+                _spriteBatch.Draw(breakoutWin, window, Color.White);
             }
                 _spriteBatch.End();
             base.Draw(gameTime);
