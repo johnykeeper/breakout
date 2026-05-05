@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -29,7 +30,7 @@ namespace breakout
             _location = location;
             _speed = new Vector2(3, -3);
         }
-        public void Update(Rectangle window, Rectangle Paddle, float paddleSpeed, List<Brick> bricks, List<Particle> particles)
+        public void Update(Rectangle window, Rectangle Paddle, float paddleSpeed, List<Brick> bricks, List<Particle> particles, SoundEffect brickHitSound)
         {
             _location.X += (int)_speed.X;
             _location.Y += (int)_speed.Y;
@@ -39,16 +40,19 @@ namespace breakout
             {
                 _location.X = 0;
                 _speed.X *= -1;
+                brickHitSound.Play();
             }
             else if(_location.X + _location.Width >= window.Width)
             {
                 _location.X = window.Width - _location.Width;
                 _speed.X *= -1;
+                brickHitSound.Play();
             }
             if (_location.Y <= 0)
             {
                 _location.Y = 0;
                 _speed.Y *= -1;
+                brickHitSound.Play();
             }
 
 
@@ -68,6 +72,7 @@ namespace breakout
                     _location.Y = Paddle.Y - _location.Height;
                     _speed.Y *= -1;
                     _speed.X += paddleSpeed * 0.35f;
+                    brickHitSound.Play();
 
                     if (_speed.X > 6) _speed.X = 6;
                     if (_speed.X < -6) _speed.X = -6;
@@ -77,11 +82,13 @@ namespace breakout
                 {
                     _location.X = Paddle.X - _location.Width;
                     _speed.X = -Math.Abs(_speed.X);
+                    brickHitSound.Play();
                 }
                 else if (_location.X + _location.Width > Paddle.X + Paddle.Width)
                 {
                     _location.X = Paddle.X + Paddle.Width;
                     _speed.X = Math.Abs(_speed.X);
+                    brickHitSound.Play();
                 }
 
             }
@@ -103,21 +110,25 @@ namespace breakout
                     {
                         _location.Y = b.Rect.Top - _location.Height;
                         _speed.Y *= -1;
+                        brickHitSound.Play();
                     }
                     else if (b.Rect.Bottom - _location.Top <= 10)
                     {
                         _location.Y = b.Rect.Bottom;
                         _speed.Y *= -1;
+                        brickHitSound.Play();
                     }
                     else if (_location.X < b.Rect.X)
                     {
                         _location.X = b.Rect.X - _location.Width;
                         _speed.X = -Math.Abs(_speed.X);
+                        brickHitSound.Play();
                     }
                     else
                     {
                         _location.X = b.Rect.X + b.Rect.Width;
                         _speed.X = Math.Abs(_speed.X);
+                        brickHitSound.Play();
                     }
 
                     break;

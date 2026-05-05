@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
@@ -19,8 +21,10 @@ namespace breakout
         KeyboardState keyboardState;
         Rectangle window;
         SpriteFont font;
-        enum Screen { Title, Game, End, Win}
+        enum Screen { Title, Game, End, Win }
         Screen screen;
+        SoundEffect brickHitSound;
+        Song backgroundMusic;
 
         public Game1()
         {
@@ -52,6 +56,12 @@ namespace breakout
             breakoutLogo = Content.Load<Texture2D>("Breakout_OG-logo");
             breakoutLose = Content.Load<Texture2D>("breakout-lose");
             breakoutWin = Content.Load<Texture2D>("breakout-win");
+            brickHitSound = Content.Load<SoundEffect>("firstpop");
+            backgroundMusic = Content.Load<Song>("music");
+
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.Volume = 0.15f;
 
             ball = new Ball(ballTexture, new Rectangle(390, 530, 20, 20));
             Color[] rowColors = {Color.DarkRed, Color.DarkOrange, Color.Goldenrod, Color.OliveDrab, Color.DarkSlateBlue};
@@ -96,7 +106,7 @@ namespace breakout
             else if(screen == Screen.Game)
             {
                 paddle.Update(keyboardState);
-                ball.Update(window, paddle.Rect, paddle.SpeedX, bricks, particles);
+                ball.Update(window, paddle.Rect, paddle.SpeedX, bricks, particles, brickHitSound);
                 if (bricks.Count == 0)
                     screen = Screen.Win;
                 if (ball.Rect.Y > window.Height)
