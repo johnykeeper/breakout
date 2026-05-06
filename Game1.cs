@@ -21,6 +21,8 @@ namespace breakout
         KeyboardState keyboardState;
         Rectangle window;
         SpriteFont font;
+        Texture2D heartTexture;
+        int lives;
         enum Screen { Title, Game, End, Win }
         Screen screen;
         SoundEffect brickHitSound;
@@ -58,6 +60,8 @@ namespace breakout
             breakoutWin = Content.Load<Texture2D>("breakout-win");
             brickHitSound = Content.Load<SoundEffect>("firstpop");
             backgroundMusic = Content.Load<Song>("music");
+            heartTexture = Content.Load<Texture2D>("heartBreakout");
+            lives = 3;
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(backgroundMusic);
@@ -110,7 +114,17 @@ namespace breakout
                 if (bricks.Count == 0)
                     screen = Screen.Win;
                 if (ball.Rect.Y > window.Height)
-                    screen = Screen.End;
+                {
+                    lives--;
+                    if (lives <= 0)
+                        screen = Screen.End;
+
+                    else
+                    {
+                        ball = new Ball(ballTexture, new Rectangle(390, 530, 20, 20));
+                        paddle = new Paddle(paddleTexture, new Rectangle(350, 550, 100, 20), window);
+                    }
+                }
             }
             else if(screen == Screen.End)
             {
@@ -127,6 +141,7 @@ namespace breakout
         private void ResetGame()
         {
             screen = Screen.Title;
+            lives = 3;
             if (screen == Screen.Title)
             {
                 if (keyboardState.IsKeyDown(Keys.Enter))
@@ -164,6 +179,10 @@ namespace breakout
                     b.Draw(_spriteBatch);
                 foreach (Particle p in particles)
                     p.Draw(_spriteBatch, brickTexture);
+                for (int i = 0; i < lives; i++)
+                {
+                    _spriteBatch.Draw(heartTexture, new Rectangle(10 + i * 40, 10, 30, 30), Color.White);
+                }
             }
             else if(screen == Screen.End)
             {
