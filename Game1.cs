@@ -78,12 +78,7 @@ namespace breakout
                 for (int col = 0; col < 10; col++)
                 {
                     bricks.Add(new Brick(brickTexture, new Rectangle(col * 78 + 10, row * 30 + 50, 70, 25), rowColors[row]));
-
-
                 }
-
-
-
             }
             // TODO: use this.Content to load your game content here
         }
